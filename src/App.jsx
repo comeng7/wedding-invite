@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 
 import BrideGroomIntro from './components/BrideGroomIntro';
-import Intro from './components/Intro';
 import Calendar from './components/Calendar';
+import Intro from './components/Intro';
 import MapContainer from './components/MapContainer';
 import PhotoGallery from './components/PhotoGallery';
-
 import './styles/main.scss';
 
 const App = () => {

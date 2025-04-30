@@ -1,74 +1,96 @@
 // eslint.config.mjs
 import pluginJs from '@eslint/js';
-import configPrettier from 'eslint-config-prettier'; // Prettier와 충돌하는 ESLint 규칙 비활성화
+import configPrettier from 'eslint-config-prettier';
 import pluginImport from 'eslint-plugin-import';
 import pluginPrettier from 'eslint-plugin-prettier';
+import pluginReact from 'eslint-plugin-react'; // *** 추가 ***
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginReactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 
 export default [
   {
-    // 전체 파일에 적용될 기본 설정
     files: ['**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx}'],
     languageOptions: {
       parserOptions: {
         ecmaFeatures: {
-          jsx: true, // JSX 파싱 활성화
+          jsx: true,
         },
+        // React 17+ new JSX transform 사용 시 필요할 수 있음
+        // sourceType: 'module',
       },
       globals: {
-        ...globals.browser, // 브라우저 전역 변수 (window 등) 인식
-        ...globals.node, // Node.js 전역 변수 (process 등) 인식
+        ...globals.browser,
+        ...globals.node,
       },
     },
     plugins: {
+      react: pluginReact, // *** 추가 ***
       'react-hooks': pluginReactHooks,
       'react-refresh': pluginReactRefresh,
-      prettier: pluginPrettier, // Prettier 규칙을 ESLint 규칙으로 실행
-      import: pluginImport, // Import 관련 규칙 플러그인
+      prettier: pluginPrettier,
+      import: pluginImport,
     },
     rules: {
-      ...pluginJs.configs.recommended.rules, // @eslint/js 기본 규칙
-      ...pluginReactHooks.configs.recommended.rules, // React Hooks 규칙
-      ...configPrettier.rules, // Prettier와 충돌하는 규칙 비활성화 (반드시 맨 뒤에)
-      'prettier/prettier': 'warn', // Prettier 규칙 위반 시 경고 표시
+      ...pluginJs.configs.recommended.rules,
+      ...pluginReact.configs.recommended.rules, // *** 추가: React 기본 규칙 ***
+      // React 17+ new JSX transform 사용 시 아래 주석 해제 고려
+      // ...pluginReact.configs['jsx-runtime'].rules, // *** 추가: JSX 런타임 규칙 (선택) ***
+      ...pluginReactHooks.configs.recommended.rules,
+      // Prettier 규칙은 맨 마지막에 배치하여 충돌 방지
+      ...configPrettier.rules, // Prettier와 충돌 규칙 비활성화
+      'prettier/prettier': 'warn',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      // --- Import 순서 규칙 설정 ---
       'import/order': [
-        'warn', // 오류 대신 경고로 표시 (자동 수정 가능)
+        'warn', // 또는 'error'
         {
+          // 그룹 순서 정의: react -> external -> internal -> relatives -> index/type/object
           groups: [
-            'builtin', // Node.js 내장 모듈 (fs, path 등)
-            'external', // npm 패키지
-            'internal', // 내부 모듈 (@/...)
-            'parent', // 부모 디렉토리 (../)
-            'sibling', // 형제 디렉토리 (./)
-            'index', // 현재 디렉토리 index 파일 (./)
-            'object', // 객체 형태의 import (사용하지 않으면 제거)
-            'type', // 타입 import (TypeScript 사용 시)
+            'builtin', // Node.js 내장 모듈
+            'external', // npm 패키지 (React 제외)
+            'internal', // 내부 alias 경로 (@/)
+            ['parent', 'sibling'], // 상대 경로 (../, ./)
+            'index', // 현재 디렉토리 index 파일
+            'type', // 타입 import
+            'object', // <object> 태그 (사용하지 않으면 제거 가능)
           ],
+          // 특정 패턴 경로 그룹 설정
           pathGroups: [
-            // @/ 로 시작하는 경로를 internal 그룹으로 지정
             {
+              // 1순위: react 관련 패키지
+              pattern: 'react**', // react, react-dom, react-router 등
+              group: 'external', // external 그룹에 속하지만
+              position: 'before', // external 그룹보다 앞에 위치
+            },
+            {
+              // 2순위: 내부 alias (@/) 경로
               pattern: '@/**',
               group: 'internal',
+              position: 'before', // internal 그룹이 상대 경로보다 앞에 오도록
             },
           ],
-          pathGroupsExcludedImportTypes: ['builtin'], // 내장 모듈은 pathGroups 규칙에서 제외
-          'newlines-between': 'always', // 그룹 사이에 항상 빈 줄 추가
+          // pathGroups 에서 정의한 패턴 타입은 기본 그룹핑에서 제외
+          pathGroupsExcludedImportTypes: ['react', 'builtin'], // react**, builtin 제외
+          'newlines-between': 'always', // 각 그룹 사이에 항상 빈 줄 추가
           alphabetize: {
             order: 'asc', // 그룹 내 알파벳 오름차순 정렬
             caseInsensitive: true, // 대소문자 구분 없이 정렬
           },
+          // 경고 수준 설정 (선택 사항)
+          warnOnUnassignedImports: true, // 할당되지 않은 import (예: import 'style.css') 에 대한 경고
         },
       ],
-      'import/no-unresolved': 'off', // alias 사용 시 경로 못 찾는 오류 비활성화 (resolver가 처리)
-      'import/prefer-default-export': 'off', // default export 강제 비활성화 (선호에 따라)
+
+      'import/no-unresolved': 'off',
+      'import/prefer-default-export': 'off',
+
+      'react/jsx-uses-react': 'off', // new JSX transform 사용 시 불필요
+      'react/react-in-jsx-scope': 'off', // new JSX transform 사용 시 불필요
+      'react/prop-types': 'off', // PropTypes 사용 안 하면 off
     },
     settings: {
       react: {
-        version: 'detect', // 설치된 React 버전 자동 감지
+        version: 'detect',
       },
       'import/resolver': {
         alias: {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Countdown from '@/components/Countdown';
 import useScrollFadeIn from '@/hooks/useScrollFadeIn';
 

@@ -1,5 +1,6 @@
-import gsap from 'gsap';
 import { useState, useEffect, useRef } from 'react';
+
+import gsap from 'gsap';
 
 const Countdown = ({ weddingDate }) => {
   const calculateTimeLeft = () => {

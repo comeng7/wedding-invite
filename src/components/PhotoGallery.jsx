@@ -1,6 +1,7 @@
-import gsap from 'gsap';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
+
+import gsap from 'gsap';
 
 import useScrollFadeIn from '@/hooks/useScrollFadeIn';
 

@@ -1,9 +1,12 @@
 /* variables.css (선택 사항: 색상/폰트 관리 용이) */
 :root {
-  --primary-color: #8e7c70; /* 메인 포인트 색상 */
+  --primary-color: #8e7c70;
+  --primary-color-rgb: 142, 124, 112; /* 추가 */
   --secondary-color: #d3c4b7; /* 보조 색상 */
-  --text-color-dark: #5a4a42; /* 어두운 텍스트 색상 */
   --text-color-light: #6a5d54; /* 밝은 텍스트 색상 */
+  --text-color-dark: #5a4a42;
+  --text-color-dark-rgb: 90, 74, 66; /* 추가 */
+  --text-color-dark: #5a4a42; /* 어두운 텍스트 색상 */
   --background-light: #fffaf7; /* 밝은 배경색 */
   --background-white: #ffffff; /* 흰색 배경 */
   --border-color: #eee; /* 경계선 색상 */

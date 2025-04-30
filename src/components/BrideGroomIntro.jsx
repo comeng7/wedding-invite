@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
+
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
@@ -36,18 +37,18 @@ const BrideGroomIntro = () => {
   }, []);
 
   return (
-    <section className='container-wrapper bride-groom-intro' ref={sectionRef}>
-      <h2 className='main-title'>INTRODUCE</h2>
-      <div className='cards'>
-        <div className='intro-card left'>
-          <p className='label'>신랑</p>
-          <p className='name'>정장오</p>
-          <p className='desc'>따뜻하고 다정한, 늘 웃음 가득한 사람이에요.</p>
+    <section className="container-wrapper bride-groom-intro" ref={sectionRef}>
+      <h2 className="main-title">INTRODUCE</h2>
+      <div className="cards">
+        <div className="intro-card left">
+          <p className="label">신랑</p>
+          <p className="name">정장오</p>
+          <p className="desc">따뜻하고 다정한, 늘 웃음 가득한 사람이에요.</p>
         </div>
-        <div className='intro-card right'>
-          <p className='label'>신부</p>
-          <p className='name'>엄유경</p>
-          <p className='desc'>밝고 섬세하며, 함께 있을 때 가장 행복한 사람이에요.</p>
+        <div className="intro-card right">
+          <p className="label">신부</p>
+          <p className="name">엄유경</p>
+          <p className="desc">밝고 섬세하며, 함께 있을 때 가장 행복한 사람이에요.</p>
         </div>
       </div>
     </section>

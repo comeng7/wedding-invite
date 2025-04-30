@@ -1,5 +1,7 @@
 import { useRef, useEffect } from 'react';
+
 import gsap from 'gsap';
+
 import bgImage from '../assets/dd.jpeg';
 
 const Intro = () => {
@@ -33,7 +35,7 @@ const Intro = () => {
             duration: 0.5,
           });
         },
-      }
+      },
     );
 
     gsap.to(clickRef.current, {
@@ -47,21 +49,21 @@ const Intro = () => {
 
   const splitText = (text) =>
     text.split('').map((char, i) => (
-      <span className='letter' key={i}>
+      <span className="letter" key={i}>
         {char === ' ' ? '\u00A0' : char}
       </span>
     ));
 
   return (
-    <div className='intro' style={{ backgroundImage: `url(${bgImage})` }}>
-      <div className='dim'>
-        <div className='intro-text' ref={textRef}>
+    <div className="intro" style={{ backgroundImage: `url(${bgImage})` }}>
+      <div className="dim">
+        <div className="intro-text" ref={textRef}>
           <p>{splitText('2025.09.06')}</p>
           <p>{splitText('우리 결혼합니다')}</p>
         </div>
-        <div className='click-indicator' ref={clickRef}>
+        <div className="click-indicator" ref={clickRef}>
           <span>Scroll</span>
-          <div className='arrow'>↓</div>
+          <div className="arrow">↓</div>
         </div>
       </div>
     </div>

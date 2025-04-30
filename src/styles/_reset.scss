@@ -34,13 +34,13 @@ footer,
 nav,
 figure,
 main {
-    margin: 0;
-    padding: 0
+  margin: 0;
+  padding: 0;
 }
 
 * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 article,
@@ -53,7 +53,7 @@ footer,
 nav,
 figure,
 main {
-  display: block
+  display: block;
 }
 
 html,
@@ -70,19 +70,19 @@ fieldset,
 svg,
 li {
   border: 0;
-  vertical-align: top
+  vertical-align: top;
 }
 
 ul,
 ol {
-  list-style: none
+  list-style: none;
 }
 
 button {
   overflow: visible;
   border: 0;
   background-color: transparent;
-  cursor: pointer
+  cursor: pointer;
 }
 
 button:disabled {
@@ -106,29 +106,31 @@ select {
   border: 0;
 }
 input::-ms-clear,
-input::-ms-reveal{
-	display:none;width:0;height:0;
+input::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
 }
 input::-webkit-search-decoration,
 input::-webkit-search-cancel-button,
 input::-webkit-search-results-button,
-input::-webkit-search-results-decoration{
-	display:none;
+input::-webkit-search-results-decoration {
+  display: none;
 }
 
 address,
 caption,
 em {
-  font-style: normal
+  font-style: normal;
 }
 
 a {
-  text-decoration: none
+  text-decoration: none;
 }
 
 table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  border-spacing: 0
+  border-spacing: 0;
 }
