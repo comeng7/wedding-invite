@@ -1,0 +1,41 @@
+.bride-groom-intro {
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .intro-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+
+    .label {
+      font-size: 0.9rem;
+      color: #8e7c70;
+      margin-bottom: 0.5rem;
+    }
+
+    .name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #5a4a42;
+    }
+
+    .desc {
+      font-size: 1rem;
+      margin-top: 1rem;
+      color: #6a5d54;
+      line-height: 1.5;
+    }
+  }
+}

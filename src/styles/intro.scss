@@ -1,0 +1,64 @@
+body.prevent-scroll {
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.intro {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.dim {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: transform 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.intro-text {
+  position: absolute;
+  color: white;
+  font-size: 3.5rem;
+  top: 10vh;
+  text-align: center;
+  font-family: 'Nanum Brush Script', cursive;
+
+  p {
+    margin: 1rem 0;
+    line-height: 2.4rem;
+  }
+
+  .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    white-space: pre;
+  }
+}
+
+.click-indicator {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: white;
+  font-family: 'Nothing You Could Do', cursive;
+
+  .arrow {
+    font-size: 1rem;
+  }
+}

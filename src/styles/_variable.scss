@@ -1,0 +1,25 @@
+/* variables.css (선택 사항: 색상/폰트 관리 용이) */
+:root {
+  --primary-color: #8e7c70; /* 메인 포인트 색상 */
+  --secondary-color: #d3c4b7; /* 보조 색상 */
+  --text-color-dark: #5a4a42; /* 어두운 텍스트 색상 */
+  --text-color-light: #6a5d54; /* 밝은 텍스트 색상 */
+  --background-light: #fffaf7; /* 밝은 배경색 */
+  --background-white: #ffffff; /* 흰색 배경 */
+  --border-color: #eee; /* 경계선 색상 */
+  --button-bg: #f8f5f2; /* 버튼 배경색 */
+  --button-text: #5a4a42; /* 버튼 텍스트 색상 */
+
+  --font-serif: 'EB Garamond', serif;
+  --font-sans: 'Noto Sans KR', sans-serif; /* 한글 폰트 추가 */
+}
+
+/* 전체적인 스타일 (body 등) */
+body {
+  font-family: var(--font-sans); /* 기본 폰트 설정 */
+  color: var(--text-color-light);
+  line-height: 1.6;
+  background-color: #f9f7f5; /* 전체 배경색 */
+  margin: 0;
+  padding: 0;
+}

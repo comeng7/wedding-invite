@@ -1,0 +1,12 @@
+// jsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".", // 기준 디렉토리
+    "paths": {
+      "@/*": ["src/*"] // @/* 패턴을 src/* 로 매핑
+    },
+    "jsx": "react-jsx" // JSX 설정 (Vite React 프로젝트 기본값)
+  },
+  "include": ["src/**/*"], // 설정 적용 범위
+  "exclude": ["node_modules", "dist"] // 제외할 폴더
+}

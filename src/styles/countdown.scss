@@ -1,0 +1,54 @@
+.countdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'EB Garamond', serif;
+  color: #8e7c70;
+  margin: 20px 0;
+
+  .time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    position: relative; // 구분자 위치 설정을 위해
+
+    .value-container {
+      position: relative;
+      height: 60px; // 애니메이션 공간 확보
+      overflow: hidden; // 넘치는 부분 숨김
+
+      .value {
+        display: inline-block; // GSAP 애니메이션 적용 위해
+        font-size: 2rem;
+        font-weight: bold;
+        line-height: 50px; // 수직 중앙 정렬
+        padding: 0 5px;
+        color: var(--color-primary);
+        min-width: 40px; // 두 자리 수 공간 확보
+        text-align: center;
+      }
+    }
+
+    .label {
+      font-size: 0.625rem;
+      color: #777;
+      text-transform: uppercase;
+    }
+
+    .separator {
+      position: absolute;
+      right: -15px; // time-unit 간격에 맞춤
+      top: 20px; // 수직 중앙 정렬
+      font-size: 2rem;
+      color: #ccc;
+      line-height: 1;
+      font-weight: bold;
+    }
+
+    // 마지막 요소의 구분자는 숨김
+    &:last-child .separator {
+      display: none;
+    }
+  }
+}

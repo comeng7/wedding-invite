@@ -1,0 +1,177 @@
+/* MapContainer 섹션 스타일 */
+.map-section {
+  background-color: var(--background-white); /* 밝은 배경 */
+  text-align: center;
+  padding: 3rem 1.5rem; /* 모바일 여백 고려 */
+  margin-bottom: 2rem; /* 섹션 간 간격 */
+  border-radius: 16px; /* 섹션 모서리 둥글게 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 은은한 그림자 */
+}
+
+.venue-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-color-dark);
+  margin-bottom: 0.5rem;
+}
+
+.address-container {
+  display: flex; /* 주소와 버튼을 가로로 배치 */
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  flex-wrap: wrap; /* 화면이 좁으면 줄바꿈 */
+  gap: 0.5rem; /* 주소와 버튼 사이 간격 */
+  margin-bottom: 1rem;
+}
+
+.venue-address-kr {
+  font-size: 0.9rem;
+  color: var(--text-color-light);
+  margin: 0; /* 기본 마진 제거 */
+  word-break: keep-all; /* 단어 단위 줄바꿈 */
+}
+
+.copy-address-button {
+  background-color: transparent; /* 배경 투명 */
+  color: var(--primary-color); /* 포인트 색상 */
+  border: 1px solid var(--primary-color); /* 테두리 추가 */
+  border-radius: 20px; /* 더 둥글게 */
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease; /* 호버 애니메이션 */
+}
+
+.copy-address-button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-white);
+}
+
+.copy-feedback {
+  font-size: 0.8rem;
+  color: green; /* 성공 시 초록색 */
+  margin-top: 0.5rem;
+  min-height: 1em; /* 메시지가 없을 때도 레이아웃 흔들리지 않게 */
+}
+
+.map-wrapper {
+  width: 100%; /* 부모 요소에 꽉 차게 */
+  max-width: 600px; /* 최대 너비 설정 */
+  margin: 1.5rem auto; /* 위아래 여백, 가운데 정렬 */
+  border-radius: 8px; /* 지도 자체 모서리 둥글게 */
+  overflow: hidden; /* 둥근 모서리 적용을 위해 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 지도 그림자 */
+}
+
+.kakao-map {
+  width: 100%;
+  height: 300px; /* 지도 높이 설정, 필요에 따라 조절 */
+}
+
+.map-buttons {
+  display: flex;
+  flex-wrap: wrap; /* 버튼이 많으면 줄바꿈 */
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.map-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px; /* 버튼 모서리 둥글게 */
+  text-decoration: none; /* 밑줄 제거 */
+  font-size: 0.825rem;
+  font-weight: bold;
+  transition: opacity 0.3s ease; /* 호버 애니메이션 */
+  width: 37.5%;
+  margin-bottom: 1rem; /* 카드 아래 여백 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.map-button:hover {
+  opacity: 0.8; /* 호버 시 투명도 */
+}
+
+/* 각 지도 버튼 색상 */
+.map-button.kakao {
+  background-color: #ffe812; /* 카카오 노란색 */
+  color: #3b1f1f; /* 카카오 진한색 */
+}
+
+.map-button.naver {
+  background-color: #1ec800; /* 네이버 초록색 */
+  color: #ffffff;
+}
+
+.map-button.google {
+  background-color: #ffffff; /* 흰색 배경 */
+  color: #555; /* 어두운 회색 텍스트 */
+  border: 1px solid #ccc; /* 경계선 */
+  width: calc(37.5% - 2px); /* 버튼 너비 조정 */
+}
+
+.map-button.tmap {
+  background-color: #0271fa; /* 티맵 파란색 */
+  color: #ffffff;
+}
+
+/* bride-groom-intro 섹션 스타일 개선 */
+.bride-groom-intro {
+  background-color: var(--background-light); /* 배경색 변수 사용 */
+  text-align: center;
+  padding: 3rem 1.5rem; /* 모바일 여백 고려 */
+  margin-bottom: 2rem;
+  overflow-x: hidden; /* 카드가 넘칠 경우 스크롤 숨김 */
+  border-radius: 16px; /* 섹션 모서리 둥글게 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); /* 은은한 그림자 */
+}
+
+.bride-groom-intro h2 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem; /* 제목 크기 조정 */
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+}
+
+.bride-groom-intro .cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* 카드 간격 줄이기 */
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 2.5rem; /* 데스크탑 카드 간격 */
+  }
+}
+
+.intro-card {
+  background: var(--background-white);
+  border-radius: 16px;
+  padding: 2rem 1.5rem; /* 모바일 패딩 조정 */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04); /* 그림자 조정 */
+  width: 100%;
+  max-width: 300px; /* 카드 최대 너비 약간 줄이기 */
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.intro-card .label {
+  font-size: 0.9rem;
+  color: var(--primary-color); /* 라벨 색상 포인트로 변경 */
+  margin-bottom: 0.5rem;
+  font-weight: bold; /* 라벨 강조 */
+}
+
+.intro-card .name {
+  font-size: 1.3rem; /* 이름 크기 조정 */
+  font-weight: bold;
+  color: var(--text-color-dark);
+}
+
+.intro-card .desc {
+  font-size: 0.95rem; /* 설명 텍스트 크기 조정 */
+  margin-top: 1rem;
+  color: var(--text-color-light);
+  line-height: 1.6; /* 줄 간격 조정 */
+}

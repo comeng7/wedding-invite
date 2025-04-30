@@ -1,0 +1,55 @@
+.calendar {
+  background-color: white;
+
+  .main-title {
+    color: #c8b1b7;
+  }
+}
+
+.calendar-date {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #8e7c70;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 25px;
+}
+
+.calendar-day-header {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.75rem;
+  text-align: center;
+  color: #bdbdbd;
+}
+
+.calendar-day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1rem;
+  color: gray;
+}
+
+.calendar-day {
+  &.wedding-day {
+    position: relative;
+    color: #ffb6c1;
+  }
+}
+
+.heart-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  svg {
+    width: 2.5rem;
+  }
+}
