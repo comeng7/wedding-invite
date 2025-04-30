@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { useState, useRef, useCallback, memo, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 
 import useScrollFadeIn from '@/hooks/useScrollFadeIn';
@@ -21,15 +21,13 @@ const sampleImages = [
 ];
 const INITIAL_VISIBLE_COUNT = 9; // 처음에 보여줄 이미지 개수
 
-// --- Helper Functions ---
 // 이미지 URL로부터 미리 로딩하는 함수
 const preloadImage = (src) => {
   const img = new Image();
   img.src = src;
 };
 
-// --- Component ---
-const PhotoGallery = memo(({ images = sampleImages }) => {
+const PhotoGallery = ({ images = sampleImages }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [showAll, setShowAll] = useState(false);
   const modalRef = useRef(null);
@@ -254,6 +252,6 @@ const PhotoGallery = memo(({ images = sampleImages }) => {
       )}
     </section>
   );
-});
+};
 
 export default PhotoGallery;
