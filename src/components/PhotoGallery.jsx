@@ -8,18 +8,18 @@ import gsap from 'gsap';
 import useScrollFadeIn from '@/hooks/useScrollFadeIn';
 
 const sampleImages = [
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
-  'public//images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
+  '/images/dd.jpeg',
 ];
 const INITIAL_VISIBLE_COUNT = 9;
 
