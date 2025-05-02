@@ -1,19 +1,17 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useRef } from 'react';
 
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const BrideGroomIntro = () => {
   const sectionRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       gsap.from('.intro-card.left', {
         x: -100,
         opacity: 0,
-        duration: 1.25,
+        duration: 1.5,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 80%',
@@ -24,17 +22,16 @@ const BrideGroomIntro = () => {
       gsap.from('.intro-card.right', {
         x: 100,
         opacity: 0,
-        duration: 1.25,
+        duration: 1.5,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 80%',
           toggleActions: 'play none none reverse',
         },
       });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    { scope: sectionRef },
+  );
 
   return (
     <section className="container-wrapper bride-groom-intro" ref={sectionRef}>

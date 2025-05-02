@@ -1,11 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 
 const Countdown = ({ weddingDate }) => {
-  const calculateTimeLeft = () => {
+  // 남은 시간을 계산하는 함수
+  const calculateTimeLeft = useCallback(() => {
     const difference = +new Date(weddingDate) - +new Date();
-    let timeLeft = {};
+    let timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
     if (difference > 0) {
       timeLeft = {
@@ -14,84 +16,77 @@ const Countdown = ({ weddingDate }) => {
         minutes: Math.floor((difference / 1000 / 60) % 60),
         seconds: Math.floor((difference / 1000) % 60),
       };
-    } else {
-      timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
     }
     return timeLeft;
-  };
+  }, [weddingDate]);
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const containerRef = useRef(null);
+  const timeUnitRefs = useRef({});
 
-  // Ref 객체 생성
-  const daysRef = useRef(null);
-  const hoursRef = useRef(null);
-  const minutesRef = useRef(null);
-  const secondsRef = useRef(null);
+  const { contextSafe } = useGSAP({ scope: containerRef });
+
+  const animateValue = contextSafe((ref) => {
+    if (!ref) return;
+    gsap.fromTo(
+      ref,
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' },
+    );
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
       const newTimeLeft = calculateTimeLeft();
-      // 이전 값과 현재 값이 다를 때만 애니메이션 적용
+
+      // 변경된 값에 대해서만 애니메이션 적용
       if (timeLeft.seconds !== newTimeLeft.seconds) {
-        animateValue(secondsRef, timeLeft.seconds, newTimeLeft.seconds);
+        animateValue(timeUnitRefs.current.seconds);
       }
       if (timeLeft.minutes !== newTimeLeft.minutes) {
-        animateValue(minutesRef, timeLeft.minutes, newTimeLeft.minutes);
+        animateValue(timeUnitRefs.current.minutes);
       }
       if (timeLeft.hours !== newTimeLeft.hours) {
-        animateValue(hoursRef, timeLeft.hours, newTimeLeft.hours);
+        animateValue(timeUnitRefs.current.hours);
       }
       if (timeLeft.days !== newTimeLeft.days) {
-        animateValue(daysRef, timeLeft.days, newTimeLeft.days);
+        animateValue(timeUnitRefs.current.days);
       }
 
       setTimeLeft(newTimeLeft);
 
-      if (
-        newTimeLeft.days === 0 &&
-        newTimeLeft.hours === 0 &&
-        newTimeLeft.minutes === 0 &&
-        newTimeLeft.seconds === 0
-      ) {
+      // 시간이 다 되면 타이머 중지
+      if (difference <= 0) {
         clearInterval(timer);
       }
     }, 1000);
 
-    // 컴포넌트 언마운트 시 타이머 제거
     return () => clearInterval(timer);
-  }, [weddingDate, timeLeft]); // timeLeft를 의존성 배열에 추가
-
-  // 숫자 변경 애니메이션 함수
-  const animateValue = (ref) => {
-    if (!ref.current) return;
-
-    // GSAP 애니메이션: 숫자가 아래에서 위로 올라오는 효과
-    gsap.fromTo(
-      ref.current,
-      { y: 20, opacity: 0 }, // 시작 상태
-      {
-        y: 0, // 최종 상태
-        opacity: 1,
-        duration: 0.5, // 애니메이션 지속 시간
-        ease: 'power2.out', // 애니메이션 이징 함수
-      },
-    );
-  };
+  }, [timeLeft, calculateTimeLeft, animateValue]);
 
   const timeUnits = [
-    { label: 'Days', value: timeLeft.days, ref: daysRef },
-    { label: 'Hours', value: timeLeft.hours, ref: hoursRef },
-    { label: 'Min', value: timeLeft.minutes, ref: minutesRef },
-    { label: 'Sec', value: timeLeft.seconds, ref: secondsRef },
+    { label: 'Days', key: 'days', value: timeLeft.days },
+    { label: 'Hours', key: 'hours', value: timeLeft.hours },
+    { label: 'Min', key: 'minutes', value: timeLeft.minutes },
+    { label: 'Sec', key: 'seconds', value: timeLeft.seconds },
   ];
 
+  // 남은 시간 계산
+  const difference = +new Date(weddingDate) - +new Date();
+  if (difference <= 0) {
+    return null; // 시간이 지났으면 카운트다운 숨김
+  }
+
   return (
-    <div className="countdown-container">
+    <div ref={containerRef} className="countdown-container">
       {timeUnits.map((unit, index) => (
         <div key={unit.label} className="time-unit">
           <span className="label">{unit.label}</span>
           <div className="value-container">
-            <span ref={unit.ref} className="value">
+            <span
+              ref={(el) => (timeUnitRefs.current[unit.key] = el)} // ref를 객체에 저장
+              className="value"
+            >
               {String(unit.value).padStart(2, '0')}
             </span>
           </div>
