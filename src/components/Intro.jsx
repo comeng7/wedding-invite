@@ -66,7 +66,7 @@ const Intro = () => {
     ));
 
   return (
-    <div ref={introRef} className="intro" style={{ backgroundImage: `url(/images/dd.jpeg)` }}>
+    <div ref={introRef} className="intro" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/dd.jpeg)` }}>
       <div className="dim">
         <div className="intro-text" ref={textRef}>
           <p>{splitText('2025.09.06')}</p>
