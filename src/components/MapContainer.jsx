@@ -5,12 +5,13 @@ import useScrollFadeIn from '@/hooks/useScrollFadeIn';
 
 const KAKAO_LOGO_PATH = `${import.meta.env.BASE_URL}images/kakao.png`;
 const NAVER_LOGO_PATH = `${import.meta.env.BASE_URL}images/naver.png`;
-const GOOGLE_LOGO_PATH = `${import.meta.env.BASE_URL}images/google.jpg`;
+const GOOGLE_LOGO_PATH = `${import.meta.env.BASE_URL}images/google.png`;
 const TMAP_LOGO_PATH = `${import.meta.env.BASE_URL}images/tmap.png`;
 
 const HOTEL_COORDS = { lat: 37.505603818492, lon: 126.88387163888 };
 const KAKAO_MAP_SCRIPT =
   'https://dapi.kakao.com/v2/maps/sdk.js?appkey=caa1f990ddac03a515947f427d7256d6&autoload=false';
+const HOTEL_NAME = '더링크호텔';
 
 const MapContainer = () => {
   const mapRef = useRef(null);
@@ -34,7 +35,7 @@ const MapContainer = () => {
       new window.kakao.maps.Marker({
         map,
         position: new window.kakao.maps.LatLng(HOTEL_COORDS.lat, HOTEL_COORDS.lon),
-        title: '더링크호텔 서울 웨딩',
+        title: HOTEL_NAME,
       });
 
       const zoomControl = new window.kakao.maps.ZoomControl();
@@ -65,12 +66,11 @@ const MapContainer = () => {
     if (address) {
       try {
         await navigator.clipboard.writeText(address);
-        openBottomSheet('주소가 클립보드에 복사되었습니다.', 3000); // 바텀 시트 열기 (3초)
+        openBottomSheet('주소가 클립보드에 복사되었습니다.', 3000);
       } catch (err) {
         console.error('주소 복사 실패:', err);
-        openBottomSheet('주소 복사에 실패했습니다. 다시 시도해주세요.', 3000); // 에러 메시지도 표시 가능
+        openBottomSheet('주소 복사에 실패했습니다. 다시 시도해주세요.', 3000);
       }
-      // setTimeout 제거
     }
   };
 
@@ -105,7 +105,7 @@ const MapContainer = () => {
           <button
             className="copy-address-button"
             onClick={handleCopyAddress}
-            aria-label="주소 복사" // 접근성을 위한 레이블
+            aria-label="주소 복사"
           >
             <ClipboardIcon />
           </button>
@@ -114,19 +114,20 @@ const MapContainer = () => {
           <div ref={mapRef} className="kakao-map" />
         </div>
         <div className="map-buttons">
-          {/* 카카오맵 버튼 */}
+          {/* 카카오맵 버튼: kakaomap:// scheme 사용하여 길찾기 바로 실행 */}
           <a
-            href={`https://map.kakao.com/link/to/더링크호텔,${HOTEL_COORDS.lat},${HOTEL_COORDS.lon}`}
+            href={`kakaomap://route?ep=${HOTEL_COORDS.lat},${HOTEL_COORDS.lon}&by=CAR`}
             className="map-button kakao"
-            target="_blank"
+            target="_blank" // target="_blank"는 웹 fallback 등을 위해 유지하는 것이 좋습니다.
             rel="noopener noreferrer"
           >
             <img src={KAKAO_LOGO_PATH} alt="카카오맵 로고" className="map-logo" />
-            <span>카카오맵</span> {/* 텍스트를 span으로 감싸기 (선택 사항) */}
+            <span>카카오맵</span>
           </a>
-          {/* 네이버 지도 버튼 */}
+
+          {/* 네이버 지도 버튼: nmap:// scheme 사용 (기존과 동일, dname 인코딩 추가) */}
           <a
-            href={`nmap://navigation?dlat=${HOTEL_COORDS.lat}&dlon=${HOTEL_COORDS.lon}&dname=더링크호텔&appname=MyWeddingCard`}
+            href={`nmap://navigation?dlat=${HOTEL_COORDS.lat}&dlon=${HOTEL_COORDS.lon}&dname=${encodeURIComponent(HOTEL_NAME)}&appname=MyWeddingCard`}
             className="map-button naver"
             target="_blank"
             rel="noopener noreferrer"
@@ -134,9 +135,10 @@ const MapContainer = () => {
             <img src={NAVER_LOGO_PATH} alt="네이버 지도 로고" className="map-logo" />
             <span>네이버 지도</span>
           </a>
-          {/* 구글맵 버튼 */}
+
+          {/* 구글맵 버튼: 범용 웹 링크 사용 (앱 설치 시 앱으로 연결 시도) */}
           <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${HOTEL_COORDS.lat},${HOTEL_COORDS.lon}&destination_place_id=&travelmode=driving`}
+            href={`https://www.google.com/maps/dir/?api=1&destination=${HOTEL_COORDS.lat},${HOTEL_COORDS.lon}&travelmode=driving`}
             className="map-button google"
             target="_blank"
             rel="noopener noreferrer"
@@ -144,14 +146,15 @@ const MapContainer = () => {
             <img src={GOOGLE_LOGO_PATH} alt="구글맵 로고" className="map-logo" />
             <span>구글맵</span>
           </a>
-          {/* 티맵 버튼 */}
+
+          {/* 티맵 버튼: tmap:// scheme 사용 (기존과 동일, goalname 인코딩 추가) */}
           <a
-            href={`tmap://route?goalname=더링크호텔&goalx=${HOTEL_COORDS.lon}&goaly=${HOTEL_COORDS.lat}`}
+            href={`tmap://route?goalname=${encodeURIComponent(HOTEL_NAME)}&goalx=${HOTEL_COORDS.lon}&goaly=${HOTEL_COORDS.lat}`}
             className="map-button tmap"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={TMAP_LOGO_PATH} alt="티맵 로고" className="map-logo" />
+            <img src={TMAP_LOGO_PATH} alt="티맵 로고" className="map-logo t-map" />
             <span>티맵</span>
           </a>
         </div>

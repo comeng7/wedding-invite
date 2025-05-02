@@ -80,6 +80,10 @@
     height: 1.2em;
     width: auto;
     opacity: 0.8;
+
+    &.t-map {
+      height: 0.825rem;
+    }
   }
 
   &:active {
