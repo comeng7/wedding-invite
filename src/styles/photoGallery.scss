@@ -11,10 +11,10 @@
   align-items: center;
   justify-content: center;
   gap: 7.5px;
-  background-color: #f8f8f8; // 배경색 (테마에 맞게 조정)
+  background-color: #f8f8f8;
   overflow: hidden;
   max-height: 1px;
-  transition: max-height 0.5s ease-in-out; // 높이 변경 애니메이션
+  transition: max-height 1s ease-in-out;
 
   &.show-all {
     max-height: 3000px !important; // 임의의 충분히 큰 값
