@@ -1,20 +1,13 @@
-/* MapContainer 섹션 스타일 (고급스럽게 수정 - sass:color 제외) */
 .map-section {
   background-color: var(--background-light);
   text-align: center;
-  padding: 3.5rem 1.5rem;
-  margin-bottom: 3rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(var(--text-color-dark-rgb, 90, 74, 66), 0.08); // RGB 변수 사용 권장
-  border: 1px solid var(--border-color);
 }
 
 .venue-name {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-color-dark);
-  margin-bottom: 0.75rem;
 }
 
 .address-container {
@@ -22,12 +15,10 @@
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 0.8rem;
-  margin-bottom: 1.5rem;
 }
 
 .venue-address-kr {
-  font-size: 0.9rem;
+  font-size: 0.825rem;
   color: var(--text-color-light);
   margin: 0;
   line-height: 1.5;
@@ -35,29 +26,13 @@
 
 .copy-address-button {
   background-color: transparent;
-  color: var(--text-color-light);
-  border: none;
-  border-radius: 50%;
-  padding: 0.5rem;
-  font-size: 1.1rem;
+  color: var(--primary-color);
+  padding: 0.4rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  &:hover {
-    background-color: rgba(var(--text-color-dark-rgb, 90, 74, 66), 0.1); // RGB 변수 사용 권장
-    color: var(--text-color-dark);
-  }
-}
-
-.copy-feedback {
-  font-size: 0.8rem;
-  color: var(--primary-color);
-  margin-top: 0.8rem;
-  min-height: 1em;
-  font-weight: 500;
 }
 
 .map-wrapper {
@@ -76,9 +51,9 @@
 
 .map-buttons {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.8rem;
-  margin-top: 2.5rem;
 }
 
 .map-button {
@@ -107,29 +82,8 @@
     opacity: 0.8;
   }
 
-  &:hover {
-    // color.adjust 대체: rgba 사용
-    // --primary-color-rgb 변수가 _variable.scss에 정의되어 있다고 가정
-    // (예: --primary-color-rgb: 142, 124, 112;)
-    background-color: rgba(var(--primary-color-rgb, 142, 124, 112), 0.1); // alpha: 0.1 (거의 투명)
-    color: var(--primary-color);
-    border-color: rgba(var(--primary-color-rgb, 142, 124, 112), 0.3); // alpha: 0.3 (옅은 테두리)
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(var(--text-color-dark-rgb, 90, 74, 66), 0.1); // RGB 변수 사용 권장
-  }
-
   &:active {
     transform: translateY(0);
     box-shadow: 0 2px 5px rgba(var(--text-color-dark-rgb, 90, 74, 66), 0.05); // RGB 변수 사용 권장
   }
 }
-
-// _variable.scss에 RGB 변수 추가 권장
-// 예:
-// :root {
-//   --primary-color: #8e7c70;
-//   --primary-color-rgb: 142, 124, 112; /* 추가 */
-//   --text-color-dark: #5a4a42;
-//   --text-color-dark-rgb: 90, 74, 66; /* 추가 */
-//   /* ... 다른 변수들 ... */
-// }

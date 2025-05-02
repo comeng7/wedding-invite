@@ -105,7 +105,7 @@ const MapContainer = () => {
             서울특별시 구로구 경인로 610 (지번) 신도림동 413-9
           </p>
           <button
-            className="copy-address-button icon-button" // icon-button 클래스 추가 (스타일링용)
+            className="copy-address-button"
             onClick={handleCopyAddress}
             aria-label="주소 복사" // 접근성을 위한 레이블
           >

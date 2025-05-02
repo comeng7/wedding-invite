@@ -1,11 +1,10 @@
-import { createPortal } from 'react-dom'; // Portal 사용
+import { createPortal } from 'react-dom';
 
 const BottomSheet = ({ isOpen, isAnimatingOut, content, animationDuration }) => {
   if (!isOpen && !isAnimatingOut) {
     return null;
   }
 
-  // document.body에 렌더링하기 위해 Portal 사용
   return createPortal(
     <div
       className={`bottom-sheet ${isOpen && !isAnimatingOut ? 'open' : ''}`}

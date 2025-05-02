@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
 
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
 import BrideGroomIntro from './components/BrideGroomIntro';
 import Calendar from './components/Calendar';
 import Intro from './components/Intro';
 import MapContainer from './components/MapContainer';
 import PhotoGallery from './components/PhotoGallery';
 import './styles/main.scss';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const App = () => {
   useEffect(() => {

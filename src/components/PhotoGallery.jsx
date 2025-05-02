@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useSwipeable } from 'react-swipeable';
 
 import gsap from 'gsap';
@@ -205,52 +206,54 @@ const PhotoGallery = ({ images = sampleImages }) => {
       )}
 
       {/* 모달 */}
-      {selectedImageIndex !== null && (
-        <div
-          {...swipeHandlers}
-          ref={modalRef}
-          className="modal-overlay"
-          onClick={closeModal}
-          style={{ visibility: 'hidden' }}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`웨딩 사진 ${selectedImageIndex + 1} 상세보기`}
-        >
-          {/* 닫기 버튼 */}
-          <button className="close-button" aria-label="닫기" onClick={closeModal}>
-            ×
-          </button>
-
-          {/* 이전 버튼 (이미지가 2개 이상일 때만 표시) */}
-          {images.length > 1 && (
-            <button className="prev-button" aria-label="이전 사진" onClick={showPrevImage}>
-              ‹
+      {selectedImageIndex !== null &&
+        createPortal(
+          <div
+            {...swipeHandlers}
+            ref={modalRef}
+            className="modal-overlay"
+            onClick={closeModal}
+            style={{ visibility: 'hidden' }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`웨딩 사진 ${selectedImageIndex + 1} 상세보기`}
+          >
+            {/* 닫기 버튼 */}
+            <button className="close-button" aria-label="닫기" onClick={closeModal}>
+              ×
             </button>
-          )}
 
-          {/* 모달 컨텐츠 */}
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img
-              ref={modalImageRef}
-              src={
-                images[selectedImageIndex] instanceof Object
-                  ? images[selectedImageIndex].src
-                  : images[selectedImageIndex]
-              }
-              alt={`웨딩 사진 ${selectedImageIndex + 1}`}
-              onContextMenu={preventContextMenu}
-              className="modal-image"
-            />
-          </div>
+            {/* 이전 버튼 (이미지가 2개 이상일 때만 표시) */}
+            {images.length > 1 && (
+              <button className="prev-button" aria-label="이전 사진" onClick={showPrevImage}>
+                ‹
+              </button>
+            )}
 
-          {/* 다음 버튼 (이미지가 2개 이상일 때만 표시) */}
-          {images.length > 1 && (
-            <button className="next-button" aria-label="다음 사진" onClick={showNextImage}>
-              ›
-            </button>
-          )}
-        </div>
-      )}
+            {/* 모달 컨텐츠 */}
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <img
+                ref={modalImageRef}
+                src={
+                  images[selectedImageIndex] instanceof Object
+                    ? images[selectedImageIndex].src
+                    : images[selectedImageIndex]
+                }
+                alt={`웨딩 사진 ${selectedImageIndex + 1}`}
+                onContextMenu={preventContextMenu}
+                className="modal-image"
+              />
+            </div>
+
+            {/* 다음 버튼 (이미지가 2개 이상일 때만 표시) */}
+            {images.length > 1 && (
+              <button className="next-button" aria-label="다음 사진" onClick={showNextImage}>
+                ›
+              </button>
+            )}
+          </div>,
+          document.body,
+        )}
     </section>
   );
 };
