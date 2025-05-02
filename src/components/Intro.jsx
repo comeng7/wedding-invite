@@ -3,8 +3,6 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 
-import bgImage from '../assets/dd.jpeg';
-
 const Intro = () => {
   const introRef = useRef(null); // 컴포넌트 루트 요소 ref
   const textRef = useRef(null);
@@ -68,7 +66,7 @@ const Intro = () => {
     ));
 
   return (
-    <div ref={introRef} className="intro" style={{ backgroundImage: `url(${bgImage})` }}>
+    <div ref={introRef} className="intro" style={{ backgroundImage: `url(public/images/dd.jpeg)` }}>
       <div className="dim">
         <div className="intro-text" ref={textRef}>
           <p>{splitText('2025.09.06')}</p>

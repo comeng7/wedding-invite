@@ -3,12 +3,10 @@ import { useEffect, useRef } from 'react';
 import useBottomSheet from '@/hooks/useBottomSheet';
 import useScrollFadeIn from '@/hooks/useScrollFadeIn';
 
-// --- 로고 이미지 경로 (실제 경로로 수정해주세요) ---
-const KAKAO_LOGO_PATH = '/src/assets/kakao.png'; // 예: '/images/logos/kakao.png'
-const NAVER_LOGO_PATH = '/src/assets/naver.png';
-const GOOGLE_LOGO_PATH = '/src/assets/google.jpg';
-const TMAP_LOGO_PATH = '/src/assets/tmap.png';
-// ------------------------------------------
+const KAKAO_LOGO_PATH = 'public/images/kakao.png';
+const NAVER_LOGO_PATH = 'public/images/naver.png';
+const GOOGLE_LOGO_PATH = 'public/images/google.jpg';
+const TMAP_LOGO_PATH = 'public/images/tmap.png';
 
 const HOTEL_COORDS = { lat: 37.505603818492, lon: 126.88387163888 };
 const KAKAO_MAP_SCRIPT =
