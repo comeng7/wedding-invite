@@ -81,7 +81,7 @@
 .modal-content {
   position: relative;
   max-width: 95vw;
-  max-height: 95vh;
+  max-height: 95dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,7 +98,7 @@
   user-select: none; // 텍스트 선택 방지
   -webkit-user-drag: none; // 이미지 드래그 방지
   pointer-events: auto; // 스와이프 등을 위해 이벤트 허용
-  touch-action: none; // 스와이프 라이브러리 사용 시 권장
+  touch-action: pan-y;
 }
 
 /* Modal Buttons Common Styles */
