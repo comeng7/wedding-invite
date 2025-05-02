@@ -1,4 +1,4 @@
-import path from 'path'; // Node.js 'path' 모듈 import
+import path from 'path';
 
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
