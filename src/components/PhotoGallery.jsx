@@ -9,18 +9,26 @@ import useScrollFadeIn from '@/hooks/useScrollFadeIn';
 
 // 기본 이미지 배열 (환경 변수를 사용하여 BASE_URL 접근)
 const sampleImages = [
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
-  `${import.meta.env.BASE_URL}images/dd.jpeg`,
+  `${import.meta.env.BASE_URL}images/album/1.jpg`,
+  `${import.meta.env.BASE_URL}images/album/2.jpg`,
+  `${import.meta.env.BASE_URL}images/album/3.jpg`,
+  `${import.meta.env.BASE_URL}images/album/4.jpg`,
+  `${import.meta.env.BASE_URL}images/album/5.jpg`,
+  `${import.meta.env.BASE_URL}images/album/6.jpg`,
+  `${import.meta.env.BASE_URL}images/album/7.jpg`,
+  `${import.meta.env.BASE_URL}images/album/8.jpg`,
+  `${import.meta.env.BASE_URL}images/album/9.jpg`,
+  `${import.meta.env.BASE_URL}images/album/10.jpg`,
+  `${import.meta.env.BASE_URL}images/album/11.jpg`,
+  `${import.meta.env.BASE_URL}images/album/12.jpg`,
+  `${import.meta.env.BASE_URL}images/album/13.jpg`,
+  `${import.meta.env.BASE_URL}images/album/14.jpg`,
+  `${import.meta.env.BASE_URL}images/album/15.jpg`,
+  `${import.meta.env.BASE_URL}images/album/16.jpg`,
+  `${import.meta.env.BASE_URL}images/album/17.jpg`,
+  `${import.meta.env.BASE_URL}images/album/18.jpg`,
+  `${import.meta.env.BASE_URL}images/album/19.jpg`,
+  `${import.meta.env.BASE_URL}images/album/20.jpg`,
 ];
 const INITIAL_VISIBLE_COUNT = 9; // 처음에 보여줄 이미지 개수
 

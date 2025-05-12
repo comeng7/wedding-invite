@@ -8,7 +8,7 @@ import gsap from 'gsap';
  */
 const useScrollFadeIn = (options = {}) => {
   const elementRef = useRef(null);
-  const { duration = 1, y = 50, start = 'top 85%' } = options;
+  const { duration = 1.5, y = 50, start = 'top 85%' } = options;
 
   useGSAP(
     () => {

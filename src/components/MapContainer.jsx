@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import useBottomSheet from '@/hooks/useBottomSheet';
 import useScrollFadeIn from '@/hooks/useScrollFadeIn';
+import useToast from '@/hooks/useToast';
 
 const KAKAO_LOGO_PATH = `${import.meta.env.BASE_URL}images/kakao.png`;
 const NAVER_LOGO_PATH = `${import.meta.env.BASE_URL}images/naver.png`;
@@ -18,7 +18,7 @@ const MapContainer = () => {
   const addressRef = useRef(null);
 
   const sectionRef = useScrollFadeIn();
-  const { openBottomSheet, BottomSheetComponent } = useBottomSheet();
+  const { openToast } = useToast();
 
   const loadKakaoMap = () => {
     if (window.kakao && window.kakao.maps) {
@@ -66,10 +66,10 @@ const MapContainer = () => {
     if (address) {
       try {
         await navigator.clipboard.writeText(address);
-        openBottomSheet('주소가 클립보드에 복사되었습니다.', 3000);
+        openToast('주소가 클립보드에 복사되었습니다.');
       } catch (err) {
         console.error('주소 복사 실패:', err);
-        openBottomSheet('주소 복사에 실패했습니다. 다시 시도해주세요.', 3000);
+        openToast('주소 복사에 실패했습니다. 다시 시도해주세요.');
       }
     }
   };
@@ -159,8 +159,6 @@ const MapContainer = () => {
           </a>
         </div>
       </section>
-
-      <BottomSheetComponent />
     </>
   );
 };

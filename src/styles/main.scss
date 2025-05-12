@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap');
 
-@import '_global';
 @import '_reset';
 @import '_font';
 @import '_variable';
+@import '_global';
 
 @import 'intro';
 @import 'brideGroomIntro';
@@ -13,6 +13,9 @@
 @import 'countdown';
 @import 'photoGallery';
 @import 'bottomSheet';
+@import 'accountInfo';
+@import 'toast';
+@import 'modal';
 
 .container-wrapper {
   display: flex;
