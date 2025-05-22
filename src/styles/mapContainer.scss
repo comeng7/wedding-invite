@@ -10,6 +10,17 @@
   color: var(--text-color-dark);
 }
 
+.venue-phone {
+  color: var(--text-color-dark);
+  background-color: transparent;
+  padding: 0.4rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
 .address-container {
   display: flex;
   justify-content: center;
@@ -19,7 +30,8 @@
 
 .venue-address-kr {
   font-size: 0.825rem;
-  color: var(--text-color-light);
+  font-family: var(--font-serif);
+  color: var(--text-color-dark);
   margin: 0;
   line-height: 1.5;
 }
@@ -30,7 +42,7 @@
   padding: 0.4rem;
   font-size: 1rem;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
 }

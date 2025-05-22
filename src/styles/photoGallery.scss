@@ -99,6 +99,7 @@
   -webkit-user-drag: none; // 이미지 드래그 방지
   pointer-events: auto; // 스와이프 등을 위해 이벤트 허용
   touch-action: pan-y;
+  z-index: 9999;
 }
 
 /* Modal Buttons Common Styles */

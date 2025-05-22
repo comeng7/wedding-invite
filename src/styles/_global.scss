@@ -1,4 +1,9 @@
 .sakura {
   position: fixed !important;
-  z-index: 9999 !important;
+  z-index: 999;
+}
+
+body.screen-zoomed img {
+  filter: blur(10px);
+  transition: filter 0.15s ease-out;
 }

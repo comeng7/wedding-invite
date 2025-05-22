@@ -97,7 +97,25 @@ const MapContainer = () => {
     <>
       <section className="container-wrapper map-section" ref={sectionRef}>
         <h2 className="main-title">LOCATION</h2>
-        <p className="venue-name">더 링크 서울, 트리뷰트 포트폴리오 호텔</p>
+        <div className="address-container">
+          <p className="venue-name">더 링크 서울, 트리뷰트 포트폴리오 호텔</p>
+          <a href="tel:02-852-5000" className="venue-phone" aria-label="전화하기">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+          </a>
+        </div>
+
         <div className="address-container">
           <p className="venue-address-kr" ref={addressRef}>
             서울특별시 구로구 경인로 610 (지번) 신도림동 413-9

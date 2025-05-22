@@ -1,0 +1,322 @@
+$main-color: #8e7c70;
+$sub-color: #d3c4b7;
+$text-on-main: #ffffff;
+$text-on-sub: #4a3f35; // 서브 컬러 위에 어두운 텍스트
+$form-focus-shadow: rgba(142, 124, 112, 0.25);
+$light-border-color: #e0e0e0;
+$soft-background: #f9f9f9;
+$error-text: #c0392b;
+$error-bg: #fbeaea;
+$error-border: #e74c3c; // 에러 보더 색상 수정
+$success-text: #27ae60;
+$success-bg: #eafaf1;
+$success-border: #a3e4c7;
+
+.guestbook-container {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.guestbook-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 35px;
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    input[type='text'],
+    textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid $light-border-color;
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+      background-color: $soft-background;
+      &:focus {
+        border-color: $main-color;
+        box-shadow: 0 0 0 3px $form-focus-shadow;
+        outline: none;
+        background-color: #fff;
+      }
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  }
+  .form-feedback {
+    font-size: 0.9em;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: -5px;
+    margin-bottom: 5px;
+    &.error {
+      color: $error-text;
+      background-color: $error-bg;
+      border: 1px solid $error-border;
+    }
+    &.success {
+      color: $success-text;
+      background-color: $success-bg;
+      border: 1px solid $success-border;
+    }
+  }
+  .submit-button {
+    padding: 14px 22px;
+    background-color: $main-color;
+    color: $text-on-main;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      transform 0.2s ease,
+      box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 124, 112, 0.2);
+    &:hover {
+      background-color: darken($main-color, 5%);
+      box-shadow: 0 6px 20px rgba(142, 124, 112, 0.25);
+    }
+    &:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 10px rgba(142, 124, 112, 0.2);
+    }
+    &:disabled {
+      background: lighten($sub-color, 10%);
+      color: darken($sub-color, 20%);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.guestbook-messages {
+  width: 100%;
+  h3 {
+    color: $main-color;
+    font-size: 1.6em;
+    margin-bottom: 25px;
+    border-bottom: 1px solid $sub-color;
+    padding-bottom: 12px;
+    font-weight: 500;
+  }
+  .loading-spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    gap: 15px;
+    color: #888;
+  }
+  .loading-spinner {
+    border: 4px solid rgba($sub-color, 0.3);
+    border-top: 4px solid $main-color;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    animation: spin 1s linear infinite;
+  }
+  .no-messages,
+  .no-more-messages {
+    text-align: center;
+    color: #777;
+    font-size: 1em;
+    padding: 25px 0;
+    font-style: italic;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .message-item {
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid lighten($sub-color, 10%);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition:
+      transform 0.2s ease-in-out,
+      box-shadow 0.2s ease-in-out;
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    }
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      .message-name {
+        font-weight: bold;
+        color: $main-color;
+        font-size: 1.1em;
+      }
+      .message-timestamp {
+        font-size: 0.8em;
+        color: darken($sub-color, 15%);
+      }
+    }
+    .message-text {
+      font-size: 1em;
+      line-height: 1.65;
+      color: #555;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pagination-controls.new-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding: 15px 0;
+  border-top: 1px solid lighten($sub-color, 15%);
+
+  .page-button,
+  .prev-button,
+  .next-button {
+    min-width: 38px;
+    height: 38px;
+    padding: 0; // 아이콘/텍스트 중앙 정렬을 위해 패딩 제거 또는 조절
+    border: none; // 요청사항: 테두리 제거 (특히 prev/next)
+    background-color: transparent;
+    color: $sub-color; // 기본 색상을 서브 컬러로
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em; // 아이콘 크기 느낌을 위해
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      transform 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: rgba($sub-color, 0.2); // 호버 시 매우 연한 배경
+      color: $main-color;
+    }
+
+    &:disabled {
+      color: lighten($sub-color, 10%);
+      cursor: not-allowed;
+      background-color: transparent;
+    }
+  }
+
+  .page-button {
+    // 숫자 버튼에만 테두리 적용 (선택적)
+    border: 1px solid $sub-color;
+    color: $text-on-sub;
+    font-size: 0.9em;
+    padding: 0 10px; // 숫자 버튼의 경우 패딩 필요
+    background-color: #fff;
+
+    &:hover:not(:disabled) {
+      border-color: $main-color;
+      background-color: rgba($sub-color, 0.1);
+      color: $main-color;
+    }
+    &.active {
+      background-color: $main-color;
+      color: $text-on-main;
+      border-color: $main-color;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(142, 124, 112, 0.3);
+      transform: translateY(-1px);
+    }
+    &:disabled:not(.active) {
+      // 활성화되지 않은 disabled 숫자 버튼
+      background-color: #f9f9f9;
+      color: #bbb;
+      border-color: #eee;
+    }
+  }
+
+  .prev-button,
+  .next-button {
+    font-weight: normal; // 너무 굵지 않게
+    font-size: 1.4em; // 아이콘 느낌으로 크기 조정
+    // Lighter, more subtle styling for prev/next
+    &:hover:not(:disabled) {
+      color: $main-color;
+      background-color: transparent; // 호버 시 배경 없음
+      transform: scale(1.1);
+    }
+    &:disabled {
+      color: lighten($sub-color, 20%);
+    }
+  }
+
+  .ellipsis {
+    padding: 0 8px;
+    color: $sub-color;
+    font-size: 0.9em;
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+  }
+}
+
+@media (max-width: 600px) {
+  .guestbook-container {
+    padding: 30px 15px;
+    border-radius: 0;
+    box-shadow: none;
+    h2 {
+      font-size: 1.9em;
+    }
+  }
+  .guestbook-messages h3 {
+    font-size: 1.4em;
+  }
+  .message-item {
+    padding: 15px;
+  }
+  .pagination-controls.new-pagination {
+    position: relative;
+    gap: 4px; // 모바일에서 간격 줄임
+    .page-button,
+    .prev-button,
+    .next-button {
+      min-width: 36px; // 터치 영역 확보
+      height: 36px;
+      font-size: 1em; // 모바일에서 페이지네이션 아이콘 크기 조정
+    }
+    .page-button {
+      font-size: 0.85em;
+      padding: 0 8px;
+    }
+    .ellipsis {
+      padding: 0 5px;
+      height: 36px;
+    }
+  }
+}

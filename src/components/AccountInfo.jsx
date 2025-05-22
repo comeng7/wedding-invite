@@ -97,7 +97,6 @@ const AccountInfo = () => {
   const sectionRef = useScrollFadeIn();
   const { contextSafe } = useGSAP({ scope: sectionRef });
   const { openToast } = useToast();
-  const { openModal } = useModal();
 
   // 아코디언 토글 함수 (GSAP 애니메이션 포함)
   const toggleSection = contextSafe((side) => {
@@ -133,11 +132,9 @@ const AccountInfo = () => {
     if (!accountNumber) return;
     try {
       await navigator.clipboard.writeText(accountNumber);
-      // openToast('계좌번호가 복사되었습니다.', 309900, 'success');
-      openModal('계좌번호 복사');
+      openToast('계좌번호가 클립보드에 복사되었습니다.');
     } catch (err) {
-      console.error('계좌번호 복사 실패:', err);
-      // openToast({ key: 'key', content: '계좌번호가 복사되었습니다.' });
+      openToast('계좌번호 복사 실패:', err);
     }
   };
 
@@ -204,11 +201,7 @@ const AccountInfo = () => {
                               if (!account.bankCode || account.bankCode === '000') {
                                 e.preventDefault();
 
-                                openToast(
-                                  '카카오페이 송금을 지원하지 않는 계좌입니다.',
-                                  3000,
-                                  'success',
-                                );
+                                openToast('카카오페이 송금을 지원하지 않는 계좌입니다.');
                               }
                             }}
                           >
