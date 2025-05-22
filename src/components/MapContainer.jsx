@@ -74,6 +74,46 @@ const MapContainer = () => {
     }
   };
 
+  const openNaverMap = () => {
+    const start = Date.now();
+    window.open('nmap://place?id=1070501110');
+    setTimeout(() => {
+      if (Date.now() - start < 2000) {
+        window.open('https://map.naver.com/p/entry/place/1070501110', '_blank');
+      }
+    }, 1500);
+  };
+
+  const openKakaoMap = () => {
+    const start = Date.now();
+    window.open('kakaomap://place?id=801090941');
+    setTimeout(() => {
+      if (Date.now() - start < 2000) {
+        window.open('https://place.map.kakao.com/801090941', '_blank');
+      }
+    }, 1500);
+  };
+
+  const openGoogleMap = () => {
+    const start = Date.now();
+    window.open('comgooglemaps://?q=더링크호텔');
+    setTimeout(() => {
+      if (Date.now() - start < 2000) {
+        window.open('https://maps.app.goo.gl/ibURi4PEvgjxe6Pn8', '_blank');
+      }
+    }, 1500);
+  };
+
+  const openTmap = () => {
+    const start = Date.now();
+    window.open('tmap://search?name=더링크호텔');
+    setTimeout(() => {
+      if (Date.now() - start < 2000) {
+        openToast('티맵 앱이 설치되어 있지 않습니다.');
+      }
+    }, 1500);
+  };
+
   const ClipboardIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -133,48 +173,28 @@ const MapContainer = () => {
         </div>
         <div className="map-buttons">
           {/* 카카오맵 버튼: kakaomap:// scheme 사용하여 길찾기 바로 실행 */}
-          <a
-            href={`kakaomap://route?ep=${HOTEL_COORDS.lat},${HOTEL_COORDS.lon}&by=CAR`}
-            className="map-button kakao"
-            target="_blank" // target="_blank"는 웹 fallback 등을 위해 유지하는 것이 좋습니다.
-            rel="noopener noreferrer"
-          >
+          <button className="map-button kakao" onClick={openKakaoMap}>
             <img src={KAKAO_LOGO_PATH} alt="카카오맵 로고" className="map-logo" />
             <span>카카오맵</span>
-          </a>
+          </button>
 
           {/* 네이버 지도 버튼: nmap:// scheme 사용 (기존과 동일, dname 인코딩 추가) */}
-          <a
-            href={`nmap://place?id=1070501110`}
-            className="map-button naver"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <button className="map-button naver" onClick={openNaverMap}>
             <img src={NAVER_LOGO_PATH} alt="네이버 지도 로고" className="map-logo" />
             <span>네이버 지도</span>
-          </a>
+          </button>
 
           {/* 구글맵 버튼: 범용 웹 링크 사용 (앱 설치 시 앱으로 연결 시도) */}
-          <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${HOTEL_COORDS.lat},${HOTEL_COORDS.lon}&travelmode=driving`}
-            className="map-button google"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <button className="map-button google" onClick={openGoogleMap}>
             <img src={GOOGLE_LOGO_PATH} alt="구글맵 로고" className="map-logo" />
             <span>구글맵</span>
-          </a>
+          </button>
 
           {/* 티맵 버튼: tmap:// scheme 사용 (기존과 동일, goalname 인코딩 추가) */}
-          <a
-            href={`tmap://route?goalname=${encodeURIComponent(HOTEL_NAME)}&goalx=${HOTEL_COORDS.lon}&goaly=${HOTEL_COORDS.lat}`}
-            className="map-button tmap"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <button className="map-button tmap" onClick={openTmap}>
             <img src={TMAP_LOGO_PATH} alt="티맵 로고" className="map-logo t-map" />
             <span>티맵</span>
-          </a>
+          </button>
         </div>
       </section>
     </>
