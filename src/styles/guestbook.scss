@@ -40,6 +40,7 @@ $messages-list-min-height: calc(
       padding: 14px 18px;
       border: 1px solid $light-border-color;
       border-radius: 10px;
+      font-size: 1rem;
       font-family: inherit;
       box-sizing: border-box;
       transition:
@@ -64,7 +65,7 @@ $messages-list-min-height: calc(
     color: $text-on-main;
     border: none;
     border-radius: 10px;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
     transition:

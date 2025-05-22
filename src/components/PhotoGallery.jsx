@@ -207,7 +207,6 @@ const PhotoGallery = ({ images = sampleImages }) => {
                 ref={index === 0 ? imgRef : undefined} // 첫 번째 이미지에만 ref 할당
                 src={imgSrc}
                 alt={`웨딩 사진 ${index + 1}`}
-                loading="lazy" // 지연 로딩
                 style={{ opacity: 1 }} // 초기 투명도 (필요시 수정)
               />
             </div>

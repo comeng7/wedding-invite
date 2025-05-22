@@ -13,7 +13,6 @@ const Guestbook = () => {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [feedbackMessage, setFeedbackMessage] = useState({ text: '', type: '' });
 
   const [allMessages, setAllMessages] = useState([]);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -245,7 +244,7 @@ const Guestbook = () => {
       </form>
 
       <div className="guestbook-messages">
-        <h3>💌 남겨주신 축하 메시지</h3>
+        <h3>➰ 남겨주신 축하 메시지 ➰</h3>
 
         {isDataLoading && (
           <div className="loading-spinner-container">

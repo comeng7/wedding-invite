@@ -145,7 +145,7 @@ const MapContainer = () => {
 
           {/* 네이버 지도 버튼: nmap:// scheme 사용 (기존과 동일, dname 인코딩 추가) */}
           <a
-            href={`nmap://navigation?dlat=${HOTEL_COORDS.lat}&dlon=${HOTEL_COORDS.lon}&dname=${encodeURIComponent(HOTEL_NAME)}&appname=MyWeddingCard`}
+            href={`nmap://place?id=1070501110`}
             className="map-button naver"
             target="_blank"
             rel="noopener noreferrer"
