@@ -63,7 +63,7 @@ const Guestbook = () => {
 
       setSlideDirection(direction);
 
-      const animationDuration = 300;
+      const animationDuration = 200;
       if (listRef.current) {
         listRef.current.classList.remove(
           'slide-in-left',
