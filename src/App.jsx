@@ -17,15 +17,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const App = () => {
   useEffect(() => {
-    const handleBeforeUnload = () => window.scrollTo(0, 0);
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-  useEffect(() => {
     if (!window || !window.Sakura) return;
 
     const sakura = new window.Sakura('body', {
