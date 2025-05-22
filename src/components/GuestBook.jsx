@@ -1,10 +1,12 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useSwipeable } from 'react-swipeable';
 
 import { collection, addDoc, query, orderBy, getDocs, Timestamp } from 'firebase/firestore';
 
 import { db, serverTimestamp } from '@/firebaseConfig';
+import useToast from '@/hooks/useToast';
 
-const MESSAGES_PER_PAGE = 5;
+const MESSAGES_PER_PAGE = 3; // 변경: 페이지당 메시지 3개
 const messagesCollectionRef = collection(db, 'guestbook_messages');
 
 const Guestbook = () => {
@@ -14,15 +16,13 @@ const Guestbook = () => {
   const [feedbackMessage, setFeedbackMessage] = useState({ text: '', type: '' });
 
   const [allMessages, setAllMessages] = useState([]);
-  const [currentPageNumber, setCurrentPageNumber] = useState(1);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isDataLoading, setIsDataLoading] = useState(true);
+  const [slideDirection, setSlideDirection] = useState('');
 
-  const showFeedback = useCallback((text, type = 'error', duration = 3000) => {
-    setFeedbackMessage({ text, type });
-    if (duration > 0) {
-      setTimeout(() => setFeedbackMessage({ text: '', type: '' }), duration);
-    }
-  }, []);
+  const listRef = useRef(null);
+
+  const { openToast } = useToast();
 
   const fetchAllMessages = useCallback(async () => {
     setIsDataLoading(true);
@@ -36,57 +36,140 @@ const Guestbook = () => {
       setAllMessages(fetchedMessages);
     } catch (err) {
       console.error('Error fetching all messages: ', err);
-      showFeedback(`메시지를 불러오는 중 오류가 발생했습니다: ${err.message}`);
+      openToast(`메시지를 불러오는 중 오류가 발생했습니다: ${err.message}`);
     } finally {
       setIsDataLoading(false);
     }
-  }, [showFeedback]);
+  }, []);
 
   useEffect(() => {
     fetchAllMessages();
   }, [fetchAllMessages]);
 
   const totalPages = useMemo(() => {
+    if (allMessages.length === 0) return 1; // 메시지 없어도 1페이지는 있도록
     return Math.ceil(allMessages.length / MESSAGES_PER_PAGE);
   }, [allMessages]);
 
   const currentMessages = useMemo(() => {
-    const startIndex = (currentPageNumber - 1) * MESSAGES_PER_PAGE;
-    const endIndex = startIndex + MESSAGES_PER_PAGE;
-    return allMessages.slice(startIndex, endIndex);
-  }, [allMessages, currentPageNumber]);
+    if (allMessages.length === 0) return [];
+    const startIndex = currentPageIndex * MESSAGES_PER_PAGE;
+    return allMessages.slice(startIndex, startIndex + MESSAGES_PER_PAGE);
+  }, [allMessages, currentPageIndex]);
+
+  const handlePageChange = useCallback(
+    (newIndex, direction) => {
+      if (allMessages.length === 0 && newIndex !== 0) return;
+      if (allMessages.length > 0 && (newIndex < 0 || newIndex >= totalPages)) return;
+
+      setSlideDirection(direction);
+
+      const animationDuration = 300;
+      if (listRef.current) {
+        listRef.current.classList.remove(
+          'slide-in-left',
+          'slide-in-right',
+          'slide-out-left',
+          'slide-out-right',
+        );
+        if (direction === 'next') {
+          listRef.current.classList.add('slide-out-left');
+        } else if (direction === 'prev') {
+          listRef.current.classList.add('slide-out-right');
+        }
+      }
+
+      setTimeout(
+        () => {
+          setCurrentPageIndex(newIndex);
+          if (listRef.current) {
+            listRef.current.classList.remove('slide-out-left', 'slide-out-right');
+            if (direction === 'next') {
+              listRef.current.classList.add('slide-in-right');
+            } else if (direction === 'prev') {
+              listRef.current.classList.add('slide-in-left');
+            }
+          }
+          setTimeout(() => {
+            if (listRef.current) {
+              listRef.current.classList.remove('slide-in-left', 'slide-in-right');
+            }
+            setSlideDirection('');
+          }, animationDuration);
+        },
+        listRef.current && direction !== '' ? animationDuration : 0,
+      );
+    },
+    [allMessages.length, totalPages],
+  );
+
+  const goToNextPage = useCallback(() => {
+    if (allMessages.length === 0) return;
+    const newIndex = (currentPageIndex + 1) % totalPages;
+    handlePageChange(newIndex, 'next');
+  }, [currentPageIndex, totalPages, allMessages.length, handlePageChange]);
+
+  const goToPrevPage = useCallback(() => {
+    if (allMessages.length === 0) return;
+    const newIndex = (currentPageIndex - 1 + totalPages) % totalPages;
+    handlePageChange(newIndex, 'prev');
+  }, [currentPageIndex, totalPages, allMessages.length, handlePageChange]);
+
+  const goToPage = useCallback(
+    (index) => {
+      if (index === currentPageIndex || allMessages.length === 0) return;
+      if (index < 0 || index >= totalPages) return;
+      const direction = index > currentPageIndex ? 'next' : 'prev';
+      handlePageChange(index, direction);
+    },
+    [currentPageIndex, totalPages, allMessages.length, handlePageChange],
+  );
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => goToNextPage(),
+    onSwipedRight: () => goToPrevPage(),
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    showFeedback('', '', 0);
 
     if (!name.trim() || !message.trim()) {
-      showFeedback('이름과 축하 메시지를 모두 입력해주세요.');
+      openToast('이름과 축하 메시지를 모두 입력해주세요.');
       return;
     }
-    if (message.length > 200) {
-      showFeedback('메시지는 200자 이내로 작성해주세요.');
+    if (message.length > 100) {
+      openToast('메시지는 100자 이내로 작성해주세요.');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const newDoc = {
+      const newDocData = {
         name: name.trim(),
         message: message.trim(),
         createdAt: serverTimestamp(),
       };
-      await addDoc(messagesCollectionRef, newDoc);
+      await addDoc(messagesCollectionRef, newDocData);
 
       setName('');
       setMessage('');
-      showFeedback('축하 메시지가 성공적으로 등록되었습니다! 🎉', 'success');
+      openToast('메시지가 등록되었습니다.');
 
-      fetchAllMessages();
-      setCurrentPageNumber(1);
+      await fetchAllMessages();
+      setCurrentPageIndex(0);
+      if (listRef.current) {
+        listRef.current.classList.remove(
+          'slide-in-left',
+          'slide-in-right',
+          'slide-out-left',
+          'slide-out-right',
+        );
+      }
     } catch (err) {
       console.error('Error adding document: ', err);
-      showFeedback(`메시지 등록 실패: ${err.message || '다시 시도해주세요.'}`);
+      openToast(`메시지 등록 실패: ${err.message || '다시 시도해주세요.'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -111,48 +194,18 @@ const Guestbook = () => {
     });
   };
 
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPageNumber(page);
-    }
-  };
-
-  const getPaginationNumbers = () => {
-    const MAX_VISIBLE_PAGES = 5;
-    if (totalPages <= MAX_VISIBLE_PAGES) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
-
-    let startPage = Math.max(1, currentPageNumber - Math.floor(MAX_VISIBLE_PAGES / 2));
-    let endPage = Math.min(totalPages, startPage + MAX_VISIBLE_PAGES - 1);
-
-    if (endPage - startPage + 1 < MAX_VISIBLE_PAGES) {
-      if (startPage === 1) {
-        endPage = Math.min(totalPages, startPage + MAX_VISIBLE_PAGES - 1);
-      } else {
-        startPage = Math.max(1, endPage - MAX_VISIBLE_PAGES + 1);
+  const renderMessagePlaceholders = () => {
+    const placeholders = [];
+    const remainingSlots = MESSAGES_PER_PAGE - currentMessages.length;
+    if (remainingSlots > 0 && currentMessages.length > 0) {
+      // 현재 메시지가 있을 때만 빈 공간 채움
+      for (let i = 0; i < remainingSlots; i++) {
+        placeholders.push(
+          <li key={`placeholder-${i}`} className="message-item placeholder-item"></li>,
+        );
       }
     }
-
-    const pages = [];
-    if (startPage > 1) {
-      pages.push(1);
-      if (startPage > 2) {
-        pages.push('...');
-      }
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        pages.push('...');
-      }
-      pages.push(totalPages);
-    }
-    return pages;
+    return placeholders;
   };
 
   return (
@@ -168,22 +221,20 @@ const Guestbook = () => {
             onChange={(e) => setName(e.target.value)}
             aria-label="이름"
             disabled={isSubmitting || isDataLoading}
+            maxLength="10"
           />
         </div>
         <div className="form-group">
           <textarea
-            placeholder="따뜻한 축하 메시지를 남겨주세요. (최대 200자)"
+            placeholder="따뜻한 축하 메시지를 남겨주세요. (최대 100자)"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows="4"
-            maxLength="200"
+            maxLength="100"
             aria-label="메시지"
             disabled={isSubmitting || isDataLoading}
           ></textarea>
         </div>
-        {feedbackMessage.text && (
-          <p className={`form-feedback ${feedbackMessage.type}`}>{feedbackMessage.text}</p>
-        )}
         <button
           type="submit"
           disabled={isSubmitting || isDataLoading || !name.trim() || !message.trim()}
@@ -209,57 +260,35 @@ const Guestbook = () => {
           </p>
         )}
 
-        {!isDataLoading &&
-          allMessages.length > 0 &&
-          currentMessages.length === 0 &&
-          currentPageNumber > 1 && <p className="no-messages">이 페이지에는 메시지가 없습니다.</p>}
-
-        {!isDataLoading && currentMessages.length > 0 && (
-          <ul>
-            {currentMessages.map((msg) => (
-              <li key={msg.id} className="message-item">
-                <div className="message-header">
-                  <strong className="message-name">{msg.name}</strong>
-                  <span className="message-timestamp">{formatTimestamp(msg.createdAt)}</span>
-                </div>
-                <p className="message-text">{msg.message}</p>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="messages-carousel-window" {...swipeHandlers}>
+          {!isDataLoading && allMessages.length > 0 && (
+            <ul ref={listRef} className="messages-list">
+              {currentMessages.map((msg) => (
+                <li key={msg.id} className="message-item">
+                  <div className="message-header">
+                    <strong className="message-name">{msg.name}</strong>
+                    <span className="message-timestamp">{formatTimestamp(msg.createdAt)}</span>
+                  </div>
+                  <p className="message-text">{msg.message}</p>
+                </li>
+              ))}
+              {renderMessagePlaceholders()}
+            </ul>
+          )}
+        </div>
 
         {!isDataLoading && totalPages > 1 && (
-          <div className="pagination-controls new-pagination">
-            <button
-              onClick={() => handlePageChange(currentPageNumber - 1)}
-              disabled={currentPageNumber === 1 || isDataLoading}
-              className="prev-button"
-            >
-              &lt;
-            </button>
-            {getPaginationNumbers().map((page, index) =>
-              typeof page === 'number' ? (
+          <div className="carousel-controls">
+            <div className="dots-indicator">
+              {Array.from({ length: totalPages }, (_, i) => (
                 <button
-                  key={index}
-                  onClick={() => handlePageChange(page)}
-                  disabled={currentPageNumber === page || isDataLoading}
-                  className={`page-button ${currentPageNumber === page ? 'active' : ''}`}
-                >
-                  {page}
-                </button>
-              ) : (
-                <span key={index} className="ellipsis">
-                  {page}
-                </span>
-              ),
-            )}
-            <button
-              onClick={() => handlePageChange(currentPageNumber + 1)}
-              disabled={currentPageNumber === totalPages || isDataLoading}
-              className="next-button"
-            >
-              &gt;
-            </button>
+                  key={i}
+                  className={`dot ${currentPageIndex === i ? 'active' : ''}`}
+                  onClick={() => goToPage(i)}
+                  aria-label={`${i + 1}번째 페이지로 이동`}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>

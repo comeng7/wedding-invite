@@ -3,12 +3,12 @@ import { getFirestore, serverTimestamp } from 'firebase/firestore'; // serverTim
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyCD0VsNg83Go2bWqddCsuym7d2F7ElUeVk',
-  authDomain: 'my-wedding-guestbook.firebaseapp.com',
-  projectId: 'my-wedding-guestbook',
-  storageBucket: 'my-wedding-guestbook.firebasestorage.app',
-  messagingSenderId: '209913274421',
-  appId: '1:209913274421:web:2891dc51a388f99eb6117c',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

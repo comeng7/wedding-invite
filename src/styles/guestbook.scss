@@ -1,20 +1,28 @@
 $main-color: #8e7c70;
 $sub-color: #d3c4b7;
 $text-on-main: #ffffff;
-$text-on-sub: #4a3f35; // 서브 컬러 위에 어두운 텍스트
+$text-on-sub: #4a3f35;
 $form-focus-shadow: rgba(142, 124, 112, 0.25);
 $light-border-color: #e0e0e0;
 $soft-background: #f9f9f9;
 $error-text: #c0392b;
 $error-bg: #fbeaea;
-$error-border: #e74c3c; // 에러 보더 색상 수정
+$error-border: #e74c3c;
 $success-text: #27ae60;
 $success-bg: #eafaf1;
 $success-border: #a3e4c7;
+$slide-duration: 0.4s;
+$message-item-estimated-height: 122.56px; // 개별 메시지 아이템의 대략적인 높이 (패딩, 마진 포함)
+$messages-list-min-height: calc(
+  #{$message-item-estimated-height} * 3
+); // 3개 아이템 높이 + 약간의 여유
 
 .guestbook-container {
   background-color: #ffffff;
   color: #333;
+  h2 {
+    color: $main-color;
+  }
 }
 
 .guestbook-form {
@@ -32,7 +40,6 @@ $success-border: #a3e4c7;
       padding: 14px 18px;
       border: 1px solid $light-border-color;
       border-radius: 10px;
-      font-size: 1em;
       font-family: inherit;
       box-sizing: border-box;
       transition:
@@ -51,31 +58,13 @@ $success-border: #a3e4c7;
       min-height: 100px;
     }
   }
-  .form-feedback {
-    font-size: 0.9em;
-    text-align: center;
-    padding: 8px;
-    border-radius: 6px;
-    margin-top: -5px;
-    margin-bottom: 5px;
-    &.error {
-      color: $error-text;
-      background-color: $error-bg;
-      border: 1px solid $error-border;
-    }
-    &.success {
-      color: $success-text;
-      background-color: $success-bg;
-      border: 1px solid $success-border;
-    }
-  }
   .submit-button {
     padding: 14px 22px;
     background-color: $main-color;
     color: $text-on-main;
     border: none;
     border-radius: 10px;
-    font-size: 1.1em;
+    font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
     transition:
@@ -105,7 +94,7 @@ $success-border: #a3e4c7;
   h3 {
     color: $main-color;
     font-size: 1.6em;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     border-bottom: 1px solid $sub-color;
     padding-bottom: 12px;
     font-weight: 500;
@@ -118,6 +107,7 @@ $success-border: #a3e4c7;
     padding: 40px 0;
     gap: 15px;
     color: #888;
+    min-height: $messages-list-min-height; // 로딩 중에도 높이 유지
   }
   .loading-spinner {
     border: 4px solid rgba($sub-color, 0.3);
@@ -127,34 +117,75 @@ $success-border: #a3e4c7;
     height: 45px;
     animation: spin 1s linear infinite;
   }
-  .no-messages,
-  .no-more-messages {
+  .no-messages {
     text-align: center;
     color: #777;
     font-size: 1em;
     padding: 25px 0;
     font-style: italic;
+    min-height: $messages-list-min-height; // 메시지 없을 때도 높이 유지
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  ul {
+  .messages-carousel-window {
+    position: relative;
+    overflow: hidden;
+    min-height: $messages-list-min-height; // 메시지 목록 최소 높이 고정
+    border-radius: 8px; // 창에 부드러운 모서리
+  }
+  .messages-list {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%;
+    opacity: 1;
+    min-height: $messages-list-min-height; // ul 자체도 최소 높이 가짐
+
+    &.slide-out-left {
+      animation: slideOutToLeft $slide-duration ease-in-out forwards;
+    }
+    &.slide-in-right {
+      animation: slideInFromRight $slide-duration ease-in-out forwards;
+    }
+    &.slide-out-right {
+      animation: slideOutToRight $slide-duration ease-in-out forwards;
+    }
+    &.slide-in-left {
+      animation: slideInFromLeft $slide-duration ease-in-out forwards;
+    }
   }
+
   .message-item {
     text-align: left;
     background-color: #fff;
     border: 1px solid lighten($sub-color, 10%);
     border-radius: 12px;
     padding: 18px 22px;
-    margin-bottom: 18px;
+    margin: 10px 0px; // 아이템 간 간격을 margin으로 조절
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    transition:
-      transform 0.2s ease-in-out,
-      box-shadow 0.2s ease-in-out;
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0; // 슬라이드 시 아이템 크기 유지
+
+    &:first-child {
+      margin-top: 10px;
     }
+    &:last-of-type {
+      // 실제 메시지 아이템 중 마지막
+      margin-bottom: 10px;
+    }
+
+    &.placeholder-item {
+      background-color: transparent;
+      border: 1px dashed transparent; // 보이지 않지만 공간 차지
+      box-shadow: none;
+      visibility: hidden; // 내용은 보이지 않지만 공간은 차지
+      // 높이를 다른 message-item과 유사하게 맞추기 위해 padding 등은 유지
+    }
+
     .message-header {
       display: flex;
       justify-content: space-between;
@@ -189,99 +220,85 @@ $success-border: #a3e4c7;
   }
 }
 
-.pagination-controls.new-pagination {
+.carousel-controls {
   display: flex;
-  justify-content: center;
+  justify-content: center; // 이전/다음 버튼 제거로 중앙 정렬
   align-items: center;
-  gap: 8px;
-  margin-top: 30px;
-  padding: 15px 0;
+  margin-top: 20px;
+  padding: 10px 0;
   border-top: 1px solid lighten($sub-color, 15%);
 
-  .page-button,
-  .prev-button,
-  .next-button {
-    min-width: 38px;
-    height: 38px;
-    padding: 0; // 아이콘/텍스트 중앙 정렬을 위해 패딩 제거 또는 조절
-    border: none; // 요청사항: 테두리 제거 (특히 prev/next)
-    background-color: transparent;
-    color: $sub-color; // 기본 색상을 서브 컬러로
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1em; // 아이콘 크기 느낌을 위해
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
+  .dots-indicator {
+    display: flex;
     justify-content: center;
-    transition:
-      background-color 0.2s,
-      color 0.2s,
-      transform 0.2s;
-
-    &:hover:not(:disabled) {
-      background-color: rgba($sub-color, 0.2); // 호버 시 매우 연한 배경
-      color: $main-color;
-    }
-
-    &:disabled {
-      color: lighten($sub-color, 10%);
-      cursor: not-allowed;
-      background-color: transparent;
-    }
-  }
-
-  .page-button {
-    // 숫자 버튼에만 테두리 적용 (선택적)
-    border: 1px solid $sub-color;
-    color: $text-on-sub;
-    font-size: 0.9em;
-    padding: 0 10px; // 숫자 버튼의 경우 패딩 필요
-    background-color: #fff;
-
-    &:hover:not(:disabled) {
-      border-color: $main-color;
-      background-color: rgba($sub-color, 0.1);
-      color: $main-color;
-    }
-    &.active {
-      background-color: $main-color;
-      color: $text-on-main;
-      border-color: $main-color;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(142, 124, 112, 0.3);
-      transform: translateY(-1px);
-    }
-    &:disabled:not(.active) {
-      // 활성화되지 않은 disabled 숫자 버튼
-      background-color: #f9f9f9;
-      color: #bbb;
-      border-color: #eee;
-    }
-  }
-
-  .prev-button,
-  .next-button {
-    font-weight: normal; // 너무 굵지 않게
-    font-size: 1.4em; // 아이콘 느낌으로 크기 조정
-    // Lighter, more subtle styling for prev/next
-    &:hover:not(:disabled) {
-      color: $main-color;
-      background-color: transparent; // 호버 시 배경 없음
-      transform: scale(1.1);
-    }
-    &:disabled {
-      color: lighten($sub-color, 20%);
-    }
-  }
-
-  .ellipsis {
-    padding: 0 8px;
-    color: $sub-color;
-    font-size: 0.9em;
-    display: inline-flex;
     align-items: center;
-    height: 38px;
+    gap: 12px; // 점 간 간격 증가
+
+    .dot {
+      width: 11px; // 점 크기 약간 키움
+      height: 11px;
+      border-radius: 50%;
+      background-color: $sub-color;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition:
+        background-color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+
+      &:hover {
+        background-color: darken($sub-color, 10%);
+        transform: scale(1.15);
+      }
+
+      &.active {
+        background-color: $main-color;
+        transform: scale(1.25); // 활성 점 더 크게
+        box-shadow: 0 0 10px rgba($main-color, 0.4);
+      }
+    }
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0.3;
+  }
+}
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0.3;
   }
 }
 
@@ -295,28 +312,20 @@ $success-border: #a3e4c7;
     }
   }
   .guestbook-messages h3 {
-    font-size: 1.4em;
+    font-size: 1em;
   }
   .message-item {
     padding: 15px;
+    margin: 8px;
+    width: calc(100% - 16px);
   }
-  .pagination-controls.new-pagination {
-    position: relative;
-    gap: 4px; // 모바일에서 간격 줄임
-    .page-button,
-    .prev-button,
-    .next-button {
-      min-width: 36px; // 터치 영역 확보
-      height: 36px;
-      font-size: 1em; // 모바일에서 페이지네이션 아이콘 크기 조정
-    }
-    .page-button {
-      font-size: 0.85em;
-      padding: 0 8px;
-    }
-    .ellipsis {
-      padding: 0 5px;
-      height: 36px;
+  .carousel-controls {
+    .dots-indicator {
+      gap: 10px;
+      .dot {
+        width: 8px;
+        height: 8px;
+      }
     }
   }
 }
